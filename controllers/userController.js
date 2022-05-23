@@ -1,5 +1,5 @@
 // import needed models
-const { User, Thought } = require('../models');
+const { User,Thought } = require('../models');
 
 // create easy CRUD commands to grab info 
 const userController = {

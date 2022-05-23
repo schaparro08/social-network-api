@@ -1,5 +1,5 @@
 //Require what is needed fom packages you installed
-const {Schema, Types} = require('mongoose');
+const {Schema, Types, model} = require('mongoose');
 const thoughtSchema = require('./Thoughts');
 const dateFormat = require('../utils/dateFormat')
 
@@ -35,7 +35,7 @@ const reactionSchema = new Schema(
 
 
 // create a model
-const Reaction = model("Reaction", reactionSchema);
+const Reaction = model("reaction", reactionSchema);
 
 
 module.exports = Reaction;

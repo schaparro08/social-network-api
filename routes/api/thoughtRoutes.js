@@ -21,10 +21,10 @@ router.route('/:thoughtId').get(getSingleThought).put(updateThought).delete(dele
 
 // api/thoughts/:thoughtsID/reactions/:reactionId route
 
-router.route('/:thoughtsID/reactions').post(addReaction)
+router.route('/:thoughtsId/reaction').post(addReaction)
 
 
-router.route('/:thoughtsID/reactions/:reactionId').delete(removeReaction)
+router.route('/:thoughtsId/reaction/:reactionId').delete(removeReaction)
 
 //export the route
 module.exports = router;

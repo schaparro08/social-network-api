@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const apitRoutes = require('./api');
+const apiRoutes = require('./api');
 
-router.unsubscribe('/api', apiRoutes);
+router.use('/api', apiRoutes);
 
-router.unsubscribe((req, res) => {
+router.use((req, res) => {
     return res.send('Wrong route!');
 
 });
