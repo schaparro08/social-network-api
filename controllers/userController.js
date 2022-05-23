@@ -35,6 +35,11 @@ const userController = {
     createUser(req,res) {
         User.create(req.body)
         // FINISH THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        .then((course) => res.json(course))
+        .catch((err) => {
+          console.log(err);
+          return res.status(500).json(err);
+        });
     }
 
 }

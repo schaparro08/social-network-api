@@ -7,11 +7,25 @@ const dateFormat = require('../utils/dateFormat')
 const thoughtSchema = new Schema(
     {
         thoughtPost:{
+            type: String,
+            minlength:1,
+            maxlength: 280,
+            required: true,
 
         },
         createdAt: {
+            type: Date,
+            default: Date.now,
             get: timestamp => dateFormat(timestamp)
-        }
+        },
+        username: {
+            type: String,
+            required: true,
+        },
+        reactions: [{
+            type: Schema.Types.ObjectId,
+            ref: "reaction",
+        }]
 
     },
     {
