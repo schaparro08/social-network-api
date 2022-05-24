@@ -84,3 +84,5 @@ updateThought(req, res) {
 
 
 }
+
+module.exports = thoughtController;
