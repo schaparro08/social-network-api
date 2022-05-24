@@ -6,7 +6,7 @@ const userController = {
     //get all users
     getUsers(req,res) {
         User.find()
-        .select('__v')
+        // .select('__v')
         .then((dbUserData) => {
             res.json(dbUserData);
         })
@@ -18,7 +18,7 @@ const userController = {
     //get single user by id
     getSingleUser(req,res) {
         User.findOne({_id: req.params.userId})
-        .select('-__v')
+        // .select('-__v')
         .populate('friends')
         .populate('thoughts')
         .then((dbUserData) => {
@@ -35,7 +35,7 @@ const userController = {
     createUser(req,res) {
         User.create(req.body)
     
-        .then((course) => res.json(course))
+        .then((dbUserData) => res.json(dbUserData))
         .catch((err) => {
           console.log(err);
           return res.status(500).json(err);
@@ -56,7 +56,7 @@ const userController = {
     updateUser(req,res) {
         User.findOneAndUpdate(
         { _id: req.params.userId},
-        { $addToSet: { friends: req.params.friendId } },
+        { $set: req.body },
         {new: true }
       )
         .then((user) =>
