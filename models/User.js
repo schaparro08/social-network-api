@@ -6,36 +6,40 @@ const userSchema = new Schema(
             type: String,
             required: true,
             unique: true,
-            trim: true,
+            trim: true
         },
         email: {
             type: String,
             required: true,
             unique: true,
-            // match: look up regex ["must be an email address!"] 
+            match: [/.+@.+\..+/, 'Must match an email address!']
         },
         thoughts: [
             {
                 type: Schema.Types.ObjectId,
-                ref: "Thought",
+                ref: "Thought"
             },
         ],
         friends: [
             {
                 type: Schema.Types.ObjectId,
-                ref: "User",
+                ref: "User"
             }
         ]
     },
     {
         toJSON: {
-            virtuals: true,
+            virtuals: true
+        
 
         },
-        id: false,
+        id: false
     }
-)
 
+)
+userSchema.virtual('friendCount').get(function () {
+    return this.friends.length;
+})
 const User = model("User", userSchema);
 
 //create a model

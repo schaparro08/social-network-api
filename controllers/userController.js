@@ -45,10 +45,10 @@ const userController = {
 
     deleteUser(req,res) {
         User.findOneAndDelete({ _id: req.params.userId })
-      .then((user) =>
-        !user
+      .then((dbUserData) =>
+        !dbUserData
           ? res.status(404).json({ message: 'No user with that ID' })
-          : Thought.deleteMany({ _id: { $in: user.username } })
+          : Thought.deleteMany({ _id: { $in: dbUserData.thoughts } })
       )
       .then(() => res.json({ message: 'User and thoughts deleted' }))
       .catch((err) => res.status(500).json(err));
@@ -59,12 +59,12 @@ const userController = {
         { $set: req.body },
         {new: true }
       )
-        .then((user) =>
-          !user
+        .then((dbUserData) =>
+          !dbUserData
             ? res
                 .status(404)
                 .json({ message: 'No user with this ID :(' })
-            : res.json(user)
+            : res.json(dbUserData)
         )
         .catch((err) => res.status(500).json(err));
     },
@@ -74,14 +74,16 @@ const userController = {
             { $addToSet: { friends: req.params.friendId } },
             {new: true }
           )
-            .then((user) =>
-              !user
+            .then((dbUserData) =>
+              !dbUserData
                 ? res
                     .status(404)
                     .json({ message: 'No user with this ID :(' })
-                : res.json(user)
+                : res.json(dbUserData)
             )
-            .catch((err) => res.status(500).json(err));
+            .catch((err) =>{
+              console.log(err);
+              res.status(500).json(err)});
 
     },
     removeFriend(req,res) {
@@ -90,12 +92,12 @@ const userController = {
             { $pull: { friends: req.params.friendId  } },
             { runValidators: true, new: true }
           )
-            .then((user) =>
-              !user
+            .then((dbUserData) =>
+              !dbUserData
                 ? res
                     .status(404)
                     .json({ message: 'No user found with that ID' })
-                : res.json(user)
+                : res.json(dbUserData)
             )
             .catch((err) => res.status(500).json(err));
     },
