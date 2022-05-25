@@ -1,8 +1,9 @@
-const { Thought, Reaction, User } = require("../models");
+const { Thought, User } = require("../models");
 
 const thoughtController = {
   getThoughts(req, res) {
     Thought.find()
+    .sort({createdAt:-1})
       .then((thoughtData) => {
         res.json(thoughtData);
       })
@@ -13,23 +14,23 @@ const thoughtController = {
   getSingleThought(req, res) {
     Thought.findOne({ _id: req.params.thoughtId })
       // .select('-__v')
-      .then((thought) =>
-        !thought
+      .then((thoughtData) =>
+        !thoughtData
           ? res.status(404).json({ message: "No thought with that ID" })
-          : res.json(thought)
+          : res.json(thoughtData)
       )
       .catch((err) => res.status(500).json(err));
   },
   createThought(req, res) {
-    Thought.create(req.body).then((thought) =>
+    Thought.create(req.body).then((thoughtData) =>
       User.findOneAndUpdate(
-        { username: thought.username },
-        { $addToSet: { thoughts: thought._id } },
+        { _id: req.body.userId },
+        { $addToSet: { thoughts: thoughtData._id } },
         { new: true }
-      ).then((thought) =>
-        !thought
+      ).then((userData) =>
+        !userData
           ? res.status(404).json({ message: "No thought with that ID" })
-          : res.json(thought)
+          : res.json(userData)
       )
     );
   },
@@ -40,17 +41,17 @@ const thoughtController = {
       { $set: req.body },
       { runValidators: true, new: true }
     )
-      .then((thought) =>
-        !thought
+      .then((thoughtData) =>
+        !thoughtData
           ? res.status(404).json({ message: "No thought with this id!" })
-          : res.json(thought)
+          : res.json(thoughtData)
       )
       .catch((err) => res.status(500).json(err));
   },
   deleteThought(req, res) {
     Thought.findOneAndDelete({ _id: req.params.thoughtId })
-      .then((thought) =>
-        !thought
+      .then((thoughtData) =>
+        !thoughtData
           ? res.status(404).json({ message: "No thought with that ID" })
           : User.deleteMany({ thoughtId: { $in: User.thoughts } })
       )
@@ -63,10 +64,10 @@ const thoughtController = {
       { $addToSet: { reaction: req.params.reactionId } },
       { new: true }
     )
-      .then((thought) =>
-        !thought
+      .then((thoughtData) =>
+        !thoughtData
           ? res.status(404).json({ message: "No thought with this ID :(" })
-          : res.json(user)
+          : res.json(thoughtData)
       )
       .catch((err) => res.status(500).json(err));
   },
@@ -76,12 +77,12 @@ const thoughtController = {
       { $pull: { reactions: req.params.reactionId } },
       { runValidators: true, new: true }
     )
-      .then((thought) =>
-        !thought
+      .then((thoughtData) =>
+        !thoughtData
           ? res
               .status(404)
               .json({ message: "No thought found with that ID :(" })
-          : res.json(thought)
+          : res.json(thoughtData)
       )
       .catch((err) => res.status(500).json(err));
   },

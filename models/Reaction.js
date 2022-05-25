@@ -1,7 +1,7 @@
 //Require what is needed fom packages you installed
-const {Schema, Types, model} = require('mongoose');
-const thoughtSchema = require('./Thoughts');
-const dateFormat = require('../utils/dateFormat')
+const {Schema, Types} = require('mongoose');
+
+// const dateFormat = require('../utils/dateFormat')
 
 // create a new schema that will have the table columns and export it
 
@@ -9,33 +9,34 @@ const reactionSchema = new Schema(
     {
         reactionId: {
             type: Schema.Types.ObjectId,
-            default: () => new Types.ObjectId(),
+            default: () => new Types.ObjectId()
           },
           reactionBody: {
             type: String,
             maxlength: 280,
-            required: true,
+            required: true
 
           },
           username: {
             type: String,
-            required: true,
+            required: true
           },
           createdAt: {
             type: Date,
-            default: Date.now,
+            default: Date.now
           },
     },
     {
         toJSON: {
-            getters: true,
+            getters: true
           },
+          id: false
     }
 );
 
 
 // create a model
-const Reaction = model("reaction", reactionSchema);
 
 
-module.exports = Reaction;
+
+module.exports = reactionSchema;

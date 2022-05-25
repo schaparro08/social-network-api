@@ -1,7 +1,7 @@
 //Require what is needed fom packages you installed
 const {Schema, model} = require('mongoose');
 const reactionsSchema = require('./Reaction');
-const dateFormat = require('../utils/dateFormat')
+// const dateFormat = require('../utils/dateFormat')
 
 // create a new schema that will have the table columns and export it
 const thoughtSchema = new Schema(
@@ -22,10 +22,7 @@ const thoughtSchema = new Schema(
             type: String,
             required: true,
         },
-        reactions: [{
-            type: Schema.Types.ObjectId,
-            ref: "reaction",
-        }]
+        reactions: [reactionsSchema]
 
     },
     {
